@@ -1,0 +1,6 @@
+rootProject.name = "logger"
+include (
+        'common',
+        'bukkit',
+        'bungee'
+)

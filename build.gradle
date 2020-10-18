@@ -1,0 +1,46 @@
+buildscript {
+    repositories {
+        jcenter()
+    }
+
+    dependencies {
+        classpath 'com.github.jengelman.gradle.plugins:shadow:6.0.0'
+    }
+}
+
+apply plugin: 'java'
+apply plugin: 'maven-publish'
+apply plugin: 'com.github.johnrengelman.shadow'
+
+
+repositories {
+    jcenter()
+    mavenLocal()
+
+    // Used for query types
+    maven { url 'https://hub.spigotmc.org/nexus/content/repositories/snapshots/'}
+}
+
+version '1.0.0'
+group 'pink.zak.logger'
+
+dependencies {
+    implementation 'com.google.guava:guava:29.0-jre'
+    implementation 'com.google.code.gson:gson:2.8.6'
+    implementation 'com.influxdb:influxdb-client-java:1.12.0'
+
+    // Used for query types
+    compileOnly 'org.spigotmc:spigot-api:1.16.3-R0.1-SNAPSHOT'
+}
+
+shadowJar {
+    
+}
+
+publishing {
+    publications {
+        maven(MavenPublication) {
+            from(components.java)
+        }
+    }
+}
