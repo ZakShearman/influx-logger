@@ -1,4 +1,4 @@
-package pink.zak.logger.queries;
+package pink.zak.metrics.queries;
 
 import com.influxdb.client.write.Point;
 

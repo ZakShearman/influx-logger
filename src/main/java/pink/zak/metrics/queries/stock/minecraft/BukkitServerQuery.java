@@ -1,8 +1,8 @@
-package pink.zak.logger.queries.stock.minecraft;
+package pink.zak.metrics.queries.stock.minecraft;
 
 import com.influxdb.client.write.Point;
-import pink.zak.logger.queries.QueryInterface;
-import pink.zak.logger.queries.stock.backends.BukkitServerStats;
+import pink.zak.metrics.queries.QueryInterface;
+import pink.zak.metrics.queries.stock.backends.BukkitServerStats;
 
 import java.util.function.BiFunction;
 

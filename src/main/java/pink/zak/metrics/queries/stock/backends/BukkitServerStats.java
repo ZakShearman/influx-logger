@@ -1,8 +1,6 @@
-package pink.zak.logger.queries.stock.backends;
+package pink.zak.metrics.queries.stock.backends;
 
 import org.bukkit.Bukkit;
-import org.bukkit.Server;
-import org.bukkit.plugin.Plugin;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;

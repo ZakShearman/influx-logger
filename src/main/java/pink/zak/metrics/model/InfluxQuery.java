@@ -1,24 +1,24 @@
-package pink.zak.logger.model;
+package pink.zak.metrics.model;
 
 import com.google.common.collect.Maps;
 import com.influxdb.client.write.Point;
 import org.jetbrains.annotations.NotNull;
-import pink.zak.logger.Logger;
-import pink.zak.logger.queries.QueryInterface;
-import pink.zak.logger.queries.stock.SystemQuery;
+import pink.zak.metrics.Metrics;
+import pink.zak.metrics.queries.QueryInterface;
+import pink.zak.metrics.queries.stock.SystemQuery;
 
 import java.util.Map;
 
-public class LoggerQuery<T> {
+public class InfluxQuery<T> {
     private T primary;
     private Point result;
 
     /**
      * Creates a new query with a specific type
      * @param primary The type that the data will be grabbed from
-     * @return The logger query to add push points to
+     * @return The influx query to add push points to
      */
-    public LoggerQuery<T> primary(T primary) {
+    public InfluxQuery<T> primary(T primary) {
         this.primary = primary;
         return this;
     }
@@ -26,9 +26,9 @@ public class LoggerQuery<T> {
     /**
      * Adds data to the point, see {@link SystemQuery} for examples
      * @param query the query type, normally made with an enum extending QueryInterface.
-     * @return The modified LoggerQuery.
+     * @return The modified InfluxQuery.
      */
-    public LoggerQuery<T> push(QueryInterface<T> query) {
+    public InfluxQuery<T> push(QueryInterface<T> query) {
         return this.push(query, Maps.newHashMap());
     }
 
@@ -36,9 +36,9 @@ public class LoggerQuery<T> {
      * Adds data to the point, see {@link SystemQuery} for examples
      * @param query the query type, normally made with an enum extending QueryInterface.
      * @param tags Any additional tags to add to the data point
-     * @return The modified LoggerQuery.
+     * @return The modified InfluxQuery.
      */
-    public LoggerQuery<T> push(QueryInterface<T> query, @NotNull Map<String, String> tags) {
+    public InfluxQuery<T> push(QueryInterface<T> query, @NotNull Map<String, String> tags) {
         if (this.result == null) {
             this.result = Point.measurement(query.measurement());
         }
@@ -48,8 +48,8 @@ public class LoggerQuery<T> {
         return this;
     }
 
-    public void executeAndTerminate(Logger logger) {
-        logger.queueResult(this.result);
+    public void executeAndTerminate(Metrics metrics) {
+        metrics.queueResult(this.result);
         this.primary = null;
         this.result = null;
     }

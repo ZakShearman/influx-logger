@@ -1,6 +1,1 @@
-rootProject.name = "logger"
-include (
-        'common',
-        'bukkit',
-        'bungee'
-)
+rootProject.name = "influx-metrics"

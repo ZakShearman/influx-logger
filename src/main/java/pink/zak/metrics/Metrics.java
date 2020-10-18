@@ -1,11 +1,11 @@
-package pink.zak.logger;
+package pink.zak.metrics;
 
 import com.google.common.collect.Lists;
 import com.influxdb.client.InfluxDBClient;
 import com.influxdb.client.InfluxDBClientFactory;
 import com.influxdb.client.domain.WritePrecision;
 import com.influxdb.client.write.Point;
-import pink.zak.logger.model.LoggerQuery;
+import pink.zak.metrics.model.InfluxQuery;
 
 import java.util.List;
 import java.util.concurrent.ExecutorService;
@@ -14,19 +14,19 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.util.function.UnaryOperator;
 
-public class Logger {
+public class Metrics {
     private final Config config;
     private final InfluxDBClient databaseClient;
     private final ScheduledExecutorService scheduledExecutorService;
 
-    public Logger(Config config, ScheduledExecutorService scheduledExecutor) {
+    public Metrics(Config config, ScheduledExecutorService scheduledExecutor) {
         this.config = config;
         this.databaseClient = this.config.getDatabaseClient();
         this.scheduledExecutorService = scheduledExecutor;
         this.startScheduledCleanup();
     }
 
-    public Logger(Config config) {
+    public Metrics(Config config) {
         this(config, Executors.newSingleThreadScheduledExecutor());
     }
 
@@ -48,17 +48,17 @@ public class Logger {
     }
 
     /**
-     * This is the primary logging method. It creates a {@link LoggerQuery}
+     * This is the primary logging method. It creates a {@link InfluxQuery}
      * and thereafter it executes and terminates it.
      * <p>
      * Executing entails pushing it onto the pending results {@link java.util.concurrent.CopyOnWriteArrayList}.
      *
-     * @param queryFunction the {@link LoggerQuery} modifier
+     * @param queryFunction the {@link InfluxQuery} modifier
      * @param <T>           the type you're modifying
      */
-    public <T> void log(UnaryOperator<LoggerQuery<T>> queryFunction) {
+    public <T> void log(UnaryOperator<InfluxQuery<T>> queryFunction) {
         this.executorService.execute(() -> {
-            queryFunction.apply(new LoggerQuery<>()).executeAndTerminate(this);
+            queryFunction.apply(new InfluxQuery<>()).executeAndTerminate(this);
         });
     }
 

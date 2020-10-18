@@ -1,4 +1,4 @@
-package pink.zak.logger.queries.stock.backends;
+package pink.zak.metrics.queries.stock.backends;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;

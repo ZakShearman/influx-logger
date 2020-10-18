@@ -22,7 +22,7 @@ repositories {
 }
 
 version '1.0.0'
-group 'pink.zak.logger'
+group 'pink.zak.metrics'
 
 dependencies {
     implementation 'com.google.guava:guava:29.0-jre'

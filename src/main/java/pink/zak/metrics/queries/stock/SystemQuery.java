@@ -1,8 +1,8 @@
-package pink.zak.logger.queries.stock;
+package pink.zak.metrics.queries.stock;
 
 import com.influxdb.client.write.Point;
-import pink.zak.logger.queries.QueryInterface;
-import pink.zak.logger.queries.stock.backends.ProcessStats;
+import pink.zak.metrics.queries.QueryInterface;
+import pink.zak.metrics.queries.stock.backends.ProcessStats;
 
 import java.util.function.BiFunction;
 
