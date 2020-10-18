@@ -17,52 +17,53 @@ import java.util.function.UnaryOperator;
 public class Logger {
     private final Config config;
     private final InfluxDBClient databaseClient;
-    private final ScheduledExecutorService scheduledExecutorService = Executors.newSingleThreadScheduledExecutor();
+    private final ScheduledExecutorService scheduledExecutorService;
 
-    public Logger(Config config) {
+    public Logger(Config config, ScheduledExecutorService scheduledExecutor) {
         this.config = config;
         this.databaseClient = this.config.getDatabaseClient();
+        this.scheduledExecutorService = scheduledExecutor;
         this.startScheduledCleanup();
+    }
+
+    public Logger(Config config) {
+        this(config, Executors.newSingleThreadScheduledExecutor());
     }
 
     /*
      * Naming of the following fields is incorrect according to java naming conventions.
      * This style is being skipped so my eyes don't bleed - Hyfe 2020
      */
-    private static final ExecutorService executorService = Executors.newSingleThreadExecutor();
-    private static final List<Point> pendingResults = Lists.newCopyOnWriteArrayList();
+    private final ExecutorService executorService = Executors.newSingleThreadExecutor();
+    private final List<Point> pendingResults = Lists.newCopyOnWriteArrayList();
 
     /**
      * Start the scheduler which writes and flushes the pending results.
      */
     public void startScheduledCleanup() {
         this.scheduledExecutorService.scheduleAtFixedRate(() -> {
-            this.databaseClient.getWriteApi().writePoints(pendingResults);
-            pendingResults.clear();
+            this.databaseClient.getWriteApi().writePoints(this.pendingResults);
+            this.pendingResults.clear();
         }, this.config.getLatency(), this.config.getLatency(), TimeUnit.SECONDS);
     }
 
     /**
      * This is the primary logging method. It creates a {@link LoggerQuery}
      * and thereafter it executes and terminates it.
-     *
+     * <p>
      * Executing entails pushing it onto the pending results {@link java.util.concurrent.CopyOnWriteArrayList}.
      *
      * @param queryFunction the {@link LoggerQuery} modifier
-     * @param <T> the type you're modifying
+     * @param <T>           the type you're modifying
      */
-    public static <T> void log(UnaryOperator<LoggerQuery<T>> queryFunction) {
-        executorService.execute(() -> {
-            queryFunction.apply(new LoggerQuery<T>()).executeAndTerminate();
+    public <T> void log(UnaryOperator<LoggerQuery<T>> queryFunction) {
+        this.executorService.execute(() -> {
+            queryFunction.apply(new LoggerQuery<>()).executeAndTerminate(this);
         });
     }
 
-    public static void log(String message) {
-
-    }
-
-    public static void queueResult(Point result) {
-        pendingResults.add(result.time(System.currentTimeMillis(), WritePrecision.MS));
+    public void queueResult(Point result) {
+        this.pendingResults.add(result.time(System.currentTimeMillis(), WritePrecision.MS));
     }
 
     public static class Config {
