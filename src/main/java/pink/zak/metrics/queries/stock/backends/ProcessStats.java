@@ -29,7 +29,11 @@ public class ProcessStats {
         return this.identifier;
     }
 
-    public long getCurrentRamUsage() {
+    public long getHeapSize() {
+        return this.runtime.totalMemory();
+    }
+
+    public long getHeapUsage() {
         return this.runtime.totalMemory() - this.runtime.freeMemory();
     }
 }

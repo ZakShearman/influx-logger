@@ -13,7 +13,7 @@ public class Fake {
         // Here's an example of how you can push stats to the metric logger.
         metrics.<ProcessStats>log(query -> query
                 .primary(new ProcessStats())
-                .push(SystemQuery.RAM_USAGE)
+                .push(SystemQuery.HEAP_USAGE)
         );
 
         // Here's an example for a minecraft server

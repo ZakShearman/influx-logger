@@ -3,6 +3,7 @@ package pink.zak.metrics;
 import com.google.common.collect.Lists;
 import com.influxdb.client.InfluxDBClient;
 import com.influxdb.client.InfluxDBClientFactory;
+import com.influxdb.client.WriteApi;
 import com.influxdb.client.domain.WritePrecision;
 import com.influxdb.client.write.Point;
 import pink.zak.metrics.model.InfluxQuery;
@@ -41,8 +42,9 @@ public class Metrics {
      * Start the scheduler which writes and flushes the pending results.
      */
     public void startScheduledCleanup() {
+        WriteApi writeApi = this.databaseClient.getWriteApi();
         this.scheduledExecutorService.scheduleAtFixedRate(() -> {
-            this.databaseClient.getWriteApi().writePoints(this.pendingResults);
+            writeApi.writePoints(this.pendingResults);
             this.pendingResults.clear();
         }, this.config.getLatency(), this.config.getLatency(), TimeUnit.SECONDS);
     }

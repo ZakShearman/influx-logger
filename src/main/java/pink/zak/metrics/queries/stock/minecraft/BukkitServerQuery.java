@@ -21,7 +21,7 @@ public enum BukkitServerQuery implements QueryInterface<BukkitServerStats> {
             }
         }
         return point;
-    });;
+    });
 
     private final BiFunction<BukkitServerStats, Point, Point> computation;
 

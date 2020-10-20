@@ -8,8 +8,19 @@ import java.util.function.BiFunction;
 
 public enum SystemQuery implements QueryInterface<ProcessStats> {
 
-    RAM_USAGE((process, point) -> {
-        return point.addField("memory-usage", process.getCurrentRamUsage());
+    HEAP_SIZE((process, point) -> {
+        return point.addField("heap-size", process.getHeapSize());
+    }),
+    HEAP_USAGE((process, point) -> {
+        return point.addField("heap-usage", process.getHeapUsage());
+    }),
+    ALL((profile, point) -> {
+        for (SystemQuery query : values()) {
+            if (!query.toString().equals("ALL")) {
+                query.get().apply(profile, point);
+            }
+        }
+        return point;
     });
 
     private final BiFunction<ProcessStats, Point, Point> computation;
