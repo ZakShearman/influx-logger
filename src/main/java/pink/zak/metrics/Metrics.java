@@ -26,8 +26,6 @@ public class Metrics {
         this.databaseClient = this.config.getDatabaseClient();
         this.scheduledExecutorService = scheduledExecutor;
         this.startScheduledCleanup();
-
-        this.databaseClient.getapi
     }
 
     public Metrics(Config config) {

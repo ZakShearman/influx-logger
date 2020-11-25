@@ -21,7 +21,7 @@ repositories {
     maven { url 'https://hub.spigotmc.org/nexus/content/repositories/snapshots/' }
 }
 
-version '1.0.0'
+version '1.0.1'
 group 'pink.zak'
 
 dependencies {
