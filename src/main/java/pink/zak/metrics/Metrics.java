@@ -22,9 +22,12 @@ public class Metrics {
 
     public Metrics(Config config, ScheduledExecutorService scheduledExecutor) {
         this.config = config;
+
         this.databaseClient = this.config.getDatabaseClient();
         this.scheduledExecutorService = scheduledExecutor;
         this.startScheduledCleanup();
+
+        this.databaseClient.getapi
     }
 
     public Metrics(Config config) {
@@ -66,6 +69,10 @@ public class Metrics {
 
     public void queueResult(Point result) {
         this.pendingResults.add(result.time(System.currentTimeMillis(), WritePrecision.MS));
+    }
+
+    public InfluxDBClient getDbClient() {
+        return this.databaseClient;
     }
 
     public static class Config {
