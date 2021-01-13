@@ -6,6 +6,8 @@ import com.influxdb.client.InfluxDBClientFactory;
 import com.influxdb.client.WriteApi;
 import com.influxdb.client.domain.WritePrecision;
 import com.influxdb.client.write.Point;
+import org.checkerframework.checker.units.qual.K;
+import pink.zak.metrics.model.AdvancedInfluxQuery;
 import pink.zak.metrics.model.InfluxQuery;
 
 import java.util.List;
@@ -62,6 +64,12 @@ public class Metrics {
     public <T> void log(UnaryOperator<InfluxQuery<T>> queryFunction) {
         this.executorService.execute(() -> {
             queryFunction.apply(new InfluxQuery<>()).executeAndTerminate(this);
+        });
+    }
+
+    public <T, V> void logAdvanced(UnaryOperator<AdvancedInfluxQuery<T, V>> queryFunction) {
+        this.executorService.execute(() -> {
+            queryFunction.apply(new AdvancedInfluxQuery<>()).executeAndTerminate(this);
         });
     }
 
