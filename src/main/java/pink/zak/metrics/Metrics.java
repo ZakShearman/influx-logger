@@ -6,7 +6,6 @@ import com.influxdb.client.InfluxDBClientFactory;
 import com.influxdb.client.WriteApi;
 import com.influxdb.client.domain.WritePrecision;
 import com.influxdb.client.write.Point;
-import org.checkerframework.checker.units.qual.K;
 import pink.zak.metrics.model.AdvancedInfluxQuery;
 import pink.zak.metrics.model.InfluxQuery;
 
