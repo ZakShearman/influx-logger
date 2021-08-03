@@ -10,7 +10,6 @@ import pink.zak.metrics.model.AdvancedInfluxQuery;
 import pink.zak.metrics.model.InfluxQuery;
 
 import java.util.List;
-import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -37,7 +36,6 @@ public class Metrics {
      * Naming of the following fields is incorrect according to java naming conventions.
      * This style is being skipped so my eyes don't bleed - Hyfe 2020
      */
-    private final ExecutorService executorService = Executors.newSingleThreadExecutor();
     private final List<Point> pendingResults = Lists.newCopyOnWriteArrayList();
 
     /**
@@ -61,15 +59,11 @@ public class Metrics {
      * @param <T>           the type you're modifying
      */
     public <T> void log(UnaryOperator<InfluxQuery<T>> queryFunction) {
-        this.executorService.execute(() -> {
-            queryFunction.apply(new InfluxQuery<>()).executeAndTerminate(this);
-        });
+        queryFunction.apply(new InfluxQuery<>()).executeAndTerminate(this);
     }
 
     public <T, V> void logAdvanced(UnaryOperator<AdvancedInfluxQuery<T, V>> queryFunction) {
-        this.executorService.execute(() -> {
-            queryFunction.apply(new AdvancedInfluxQuery<>()).executeAndTerminate(this);
-        });
+        queryFunction.apply(new AdvancedInfluxQuery<>()).executeAndTerminate(this);
     }
 
     public void queueResult(Point result) {

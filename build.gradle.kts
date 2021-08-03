@@ -13,16 +13,16 @@ repositories {
     maven("https://oss.sonatype.org/content/groups/public/")
 }
 
-version = "1.2.1"
+version = "1.2.2"
 group = "pink.zak"
 
 dependencies {
-    api("com.google.guava:guava:30.1.1-jre")
-    api("com.google.code.gson:gson:2.8.7")
+    compileOnly("com.google.guava:guava:30.1.1-jre")
+    compileOnly("com.google.code.gson:gson:2.8.7")
     api("com.influxdb:influxdb-client-java:2.3.0")
 
     // Used for query types
-    compileOnly("org.spigotmc:spigot-api:1.16.5-R0.1-SNAPSHOT")
+    compileOnly("org.spigotmc:spigot-api:1.17.1-R0.1-SNAPSHOT")
 }
 
 publishing {
