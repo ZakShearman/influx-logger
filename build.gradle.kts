@@ -19,7 +19,7 @@ group = "pink.zak"
 dependencies {
     compileOnly("com.google.guava:guava:30.1.1-jre")
     compileOnly("com.google.code.gson:gson:2.8.7")
-    api("com.influxdb:influxdb-client-java:2.3.0")
+    api("com.influxdb:influxdb-client-java:3.2.0")
 
     // Used for query types
     compileOnly("org.spigotmc:spigot-api:1.17.1-R0.1-SNAPSHOT")
